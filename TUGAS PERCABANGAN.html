@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Kalori Olahraga</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 5px;
+        }
+        #hasil {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kalkulator Kalori Olahraga</h1>
+    <div>
+        <label for="lari">Berapa menit Anda berlari?</label>
+        <input type="number" id="lari" min="0" value="0">
+    </div>
+    <div>
+        <label for="pushup">Berapa menit Anda melakukan push-up?</label>
+        <input type="number" id="pushup" min="0" value="0">
+    </div>
+    <div>
+        <label for="plank">Berapa menit Anda melakukan plank?</label>
+        <input type="number" id="plank" min="0" value="0">
+    </div>
+    <button onclick="hitungKalori()">Hitung Kalori</button>
+    <div id="hasil"></div>
+
+    <script>
+        function hitungKaloriLari(waktu) {
+            return Math.floor(waktu / 5) * 60;
+        }
+
+        function hitungKaloriPushup(waktu) {
+            return Math.floor(waktu / 30) * 200;
+        }
+
+        function hitungKaloriPlank(waktu) {
+            return waktu * 5;
+        }
+
+        function getPesanMotivasi(totalKalori) {
+            if (totalKalori === 0) {
+                return "Anda belum melakukan olahraga. Ayo mulai berolahraga untuk kesehatan Anda!";
+            } else if (totalKalori < 100) {
+                return "Bagus! Ini awal yang baik. Tingkatkan lagi olahraga Anda untuk hasil yang lebih optimal.";
+            } else if (totalKalori < 300) {
+                return "Kerja bagus! Anda telah membakar kalori yang cukup. Pertahankan konsistensi Anda.";
+            } else {
+                return "Luar biasa! Anda telah melakukan olahraga yang intens. Jaga keseimbangan dan istirahat yang cukup.";
+            }
+        }
+
+        function hitungKalori() {
+            const waktuLari = parseInt(document.getElementById('lari').value) || 0;
+            const waktuPushup = parseInt(document.getElementById('pushup').value) || 0;
+            const waktuPlank = parseInt(document.getElementById('plank').value) || 0;
+
+            let kaloriLari = 0, kaloriPushup = 0, kaloriPlank = 0;
+
+            if (waktuLari > 0) {
+                kaloriLari = hitungKaloriLari(waktuLari);
+            }
+            if (waktuPushup > 0) {
+                kaloriPushup = hitungKaloriPushup(waktuPushup);
+            }
+            if (waktuPlank > 0) {
+                kaloriPlank = hitungKaloriPlank(waktuPlank);
+            }
+
+            const totalKalori = kaloriLari + kaloriPushup + kaloriPlank;
+            const pesanMotivasi = getPesanMotivasi(totalKalori);
+
+            const hasil = document.getElementById('hasil');
+            hasil.innerHTML = `
+                <p>Kalori yang terbakar dari lari: ${kaloriLari}</p>
+                <p>Kalori yang terbakar dari push-up: ${kaloriPushup}</p>
+                <p>Kalori yang terbakar dari plank: ${kaloriPlank}</p>
+                <p>Total kalori yang terbakar: ${totalKalori}</p>
+                <p>${pesanMotivasi}</p>
+            `;
+        }
+    </script>
+</body>
+</html>

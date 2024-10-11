@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Skak Raja dan Benteng</title>
+</head>
+<body>
+    <h1>Simulasi Pengecekan Skak Raja dan Benteng</h1>
+    <p>Masukkan posisi Raja (R) dan Benteng (B) melalui prompt untuk mengecek apakah Raja terkena skak.</p>
+
+    <button onclick="runSimulation()">Jalankan Simulasi</button>
+
+    <h3>Hasil:</h3>
+    <pre id="result"></pre>
+
+    <script>
+        // Membuat papan catur 5x5 kosong
+        const board = [
+            ['*', '*', '*', '*', '*'],
+            ['*', '*', '*', '*', '*'],
+            ['*', '*', '*', '*', '*'],
+            ['*', '*', '*', '*', '*'],
+            ['*', '*', '*', '*', '*']
+        ];
+
+        // Fungsi untuk menampilkan papan catur
+        function printBoard(board) {
+            let boardOutput = '';
+            for (let row of board) {
+                boardOutput += row.join(' ') + '\n';
+            }
+            return boardOutput;
+        }
+
+        // Fungsi untuk menerima input posisi Raja dan Benteng
+        function setPiecesPosition(board) {
+            // Input posisi Raja
+            let kingRow = parseInt(prompt("Masukkan baris untuk Raja (0-4): "));
+            let kingCol = parseInt(prompt("Masukkan kolom untuk Raja (0-4): "));
+
+            // Input posisi Benteng
+            let rookRow = parseInt(prompt("Masukkan baris untuk Benteng (0-4): "));
+            let rookCol = parseInt(prompt("Masukkan kolom untuk Benteng (0-4): "));
+
+            // Set posisi Raja (R) di papan
+            board[kingRow][kingCol] = 'R';
+
+            // Set posisi Benteng (B) di papan
+            board[rookRow][rookCol] = 'B';
+        }
+
+        // Fungsi untuk mencari posisi Raja dan Benteng
+        function findPositions(board) {
+            let kingPos = null;
+            let rookPos = null;
+            
+            // Cari posisi Raja dan Benteng
+            for (let i = 0; i < board.length; i++) {
+                for (let j = 0; j < board[i].length; j++) {
+                    if (board[i][j] === 'R') {
+                        kingPos = [i, j]; // Simpan posisi Raja
+                    }
+                    if (board[i][j] === 'B') {
+                        rookPos = [i, j]; // Simpan posisi Benteng
+                    }
+                }
+            }
+            return { kingPos, rookPos };
+        }
+
+        // Fungsi untuk mengecek apakah Raja terkena skak
+        function isKingInCheck(board) {
+            const { kingPos, rookPos } = findPositions(board);
+            
+            // Cek apakah posisi Raja dan Benteng ada di baris atau kolom yang sama
+            if (kingPos[0] === rookPos[0] || kingPos[1] === rookPos[1]) {
+                return true; // Raja terkena skak
+            }
+            return false; // Raja aman
+        }
+
+        // Fungsi untuk menjalankan simulasi skak Raja dan Benteng
+        function runSimulation() {
+            // Reset papan catur
+            for (let i = 0; i < board.length; i++) {
+                for (let j = 0; j < board[i].length; j++) {
+                    board[i][j] = '*';
+                }
+            }
+
+            // Memasukkan posisi Raja dan Benteng secara dinamis
+            setPiecesPosition(board);
+
+            // Cetak papan setelah posisi dimasukkan
+            let boardDisplay = "Papan catur setelah posisi Raja dan Benteng ditentukan:\n";
+            boardDisplay += printBoard(board);
+
+            // Cek apakah Raja terkena skak
+            if (isKingInCheck(board)) {
+                boardDisplay += "Raja terkena skak!";
+            } else {
+                boardDisplay += "Raja aman.";
+            }
+
+            // Tampilkan hasil di halaman
+            document.getElementById('result').textContent = boardDisplay;
+        }
+    </script>
+</body>
+</html>
